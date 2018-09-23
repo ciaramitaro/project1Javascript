@@ -1,7 +1,8 @@
 var getId = function (id) {
     return document.getElementById(id);
 };
-var user={
+
+var user = {
     fName:'',
     lName:'',
     dob: '',
@@ -19,32 +20,36 @@ var displayUser= function () {
     user.password = getId("email").value;
     user.ageInYears= calcAgeInYears(user.dob);
 
-    getId("display_user").innerHTML = user.fName+ " "+ user.lName+
-        ", your age is " + user.ageInYears+ " and your email is "+ user.email;
+    getId("display_user").innerHTML = user.fName + " " + user.lName +
+        ", your age is " + user.ageInYears + " and your email is " + user.email;
 };
-var verifyPassword= function () {
-    if(getId("password").value === getId("verifyPassword").value)
+
+var verifyPassword = function() {
+    var userPassword = getId("password").value;
+    var userVerifyPassword = getId("verifyPassword").value;
+
+    if(userPassword === userVerifyPassword && userPassword)
     {
-       displayUser();
+        displayUser();
     }
     else{
-        alert("Your passwords do not match!");
+        alert("Your passwords do not match or the password field is empty!");
         getId("password").focus();
     }
 };
-var calcAgeInYears =function (dob) {
-   // var birthday= dob.split('/');
-    var birthday= (new Date(dob)).getFullYear();
-   var today = (new Date()).getFullYear();
-   // var answer=  Number(today) - parseInt(birthday[2], 10);
-    var answer=  Number(today) - Number(birthday);
-   return answer;
-}
-var formReset= function(){
 
-    getId("user_form").reset();
+var calcAgeInYears = function(dob) {
+    var birthday = new Date(dob);
+    var today = new Date();
+    var answer =  today - birthday;
 
+    return Math.floor(answer / 31557600000);
 };
+
+var formReset = function() {
+    getId("user_form").reset();
+};
+
 window.onload = function() {
     getId("submit").onclick = verifyPassword;
     getId("clear").onclick= formReset;
